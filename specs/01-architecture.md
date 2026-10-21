@@ -163,6 +163,6 @@ The package SHOULD follow Pi extension packaging conventions:
 
 ## 7. Footer conflict policy
 
-`pid-footer` replaces the final Footer renderer. Another Footer-replacing extension may overwrite it depending on load order.
+`pi-footer` replaces the final Footer renderer. Another Footer-replacing extension may overwrite it depending on load order.
 
 The README MUST warn users not to enable `pi-statusline`, `pi-powerline-footer`, or another Footer replacement at the same time. `pi-usage` is not a Footer replacement and may coexist, although duplicate provider polling should be documented if both implement the same usage source.

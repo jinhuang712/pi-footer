@@ -6,11 +6,11 @@ This document records decisions that do not block the overall architecture but s
 
 The following decisions were confirmed before implementation begins:
 
-- Provider Usage is built into `pid-footer` for OpenAI Codex and OpenCode Go.
+- Provider Usage is built into `pi-footer` for OpenAI Codex and OpenCode Go.
 - Custom/proxy Provider origins are not queried for Usage in v0.1.
 - The default layout has two primary rows, a conditional Provider Usage row, and a conditional extension-status row.
 - The minimum supported Pi version is the current `0.84.x` line; development verification targets Pi `0.84.3`.
-- The package name is `pid-footer`, published without an npm scope, and uses MIT licensing. Repository/author metadata is finalized in the package scaffold.
+- The package name is `pi-footer`, published without an npm scope, and uses MIT licensing. Repository/author metadata is finalized in the package scaffold.
 - Segments are independent, freely placeable units: users can move any Segment up/down (between rows) and left/right (between groups), and rendering must be robust to any such arrangement.
 
 ## D-001: Default preset name
@@ -45,7 +45,7 @@ Reason: readable without Nerd Font and visually lighter than Powerline blocks.
 
 ## D-006: Provider usage ownership
 
-**Decision:** implement Codex and OpenCode Go adapters inside `pid-footer` in v0.1, while keeping the `/usage` management experience out of scope.
+**Decision:** implement Codex and OpenCode Go adapters inside `pi-footer` in v0.1, while keeping the `/usage` management experience out of scope.
 
 Reason: the relevant adapter code is small enough, and structured data is required for correct per-window coloring.
 
@@ -57,7 +57,7 @@ Reason: provider quota is a snapshot and does not need per-token polling.
 
 ## D-008: Project configuration
 
-**Decision:** support `.pi/pid-footer.json`, but read it only when the global opt-in is true.
+**Decision:** support `.pi/pi-footer.json`, but read it only when the global opt-in is true.
 
 Reason: avoids unexpected repository-local UI changes while preserving team/project customization.
 
@@ -75,7 +75,7 @@ Reason: arbitrary extension loading and lifecycle ownership need a separate desi
 
 ## D-011: Provider usage when `pi-usage` is installed
 
-**Decision:** allow coexistence and document possible duplicate polling. Do not make `pid-footer` depend on `pi-usage`.
+**Decision:** allow coexistence and document possible duplicate polling. Do not make `pi-footer` depend on `pi-usage`.
 
 A future version may define a structured handoff protocol, but v0.1 should prioritize a self-contained Footer.
 
@@ -117,7 +117,7 @@ Reason: this is the API line inspected during design and keeps the first impleme
 
 ## D-018: Package identity
 
-**Decision:** use the unscoped npm package name `pid-footer` and MIT licensing. Final repository and author metadata will be added during package scaffolding.
+**Decision:** use the unscoped npm package name `pi-footer` and MIT licensing. Final repository and author metadata will be added during package scaffolding.
 
 ## D-019: Preset locking and custom detail mode
 

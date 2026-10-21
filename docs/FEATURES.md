@@ -1,6 +1,6 @@
 # Features
 
-`pid-footer` replaces only Pi's Footer and leaves the editor, prompt queue, Bash mode, stash, and other UI areas unchanged.
+`pi-footer` replaces only Pi's Footer and leaves the editor, prompt queue, Bash mode, stash, and other UI areas unchanged.
 
 ## Footer content
 

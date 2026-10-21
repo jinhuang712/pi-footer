@@ -248,6 +248,6 @@ The default Custom profile selects `5h` and `week`, enables reset display, and r
 `Codex` / `OpenCode Go` / `Ark` / `Coding` uses the provider accent color, while each percentage uses its independent quota state color. The Segment MUST not show secrets, account tokens, or opaque account IDs.
 
 ## 11. Coexistence with `pi-usage`
-`pi-usage` may be installed for its interactive `/usage` flow. `pid-footer` should not import the whole extension as a runtime dependency.
+`pi-usage` may be installed for its interactive `/usage` flow. `pi-footer` should not import the whole extension as a runtime dependency.
 
 If both extensions query the same provider, duplicate polling is acceptable for the first implementation but SHOULD be documented. A future version MAY define a structured, versioned usage handoff protocol.

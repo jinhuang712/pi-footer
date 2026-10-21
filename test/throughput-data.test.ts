@@ -84,6 +84,16 @@ describe("output throughput", () => {
 		expect(persist.mock.calls[0]?.[0].tokensPerSecond).toBe(0);
 	});
 
+	it("restores a record written under the extension's former entry name", () => {
+		const { source, store } = setup();
+		source.restore([{ type: "custom", customType: "pid-footer/throughput", data: record }]);
+		expect(store.getSnapshot().conversation.throughput).toEqual(record);
+	});
+
+	it("writes under the current entry name only", () => {
+		expect(THROUGHPUT_ENTRY).toBe("pi-footer/throughput");
+	});
+
 	it("restores only valid supplied branch records and clears on session/tree changes", () => {
 		const { source, store, persist, advance } = setup();
 		source.restore([entry, { ...entry, data: { ...record, durationMs: 0 } }]);

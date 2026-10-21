@@ -7,14 +7,29 @@
 Global configuration:
 
 ```text
-~/.pi/agent/pid-footer.json
+~/.pi/agent/pi-footer.json
 ```
 
 Optional project configuration:
 
 ```text
-<project-root>/.pi/pid-footer.json
+<project-root>/.pi/pi-footer.json
 ```
+
+### Legacy file names
+
+The extension was renamed twice: it shipped as `pi-x-footer`, then `pid-footer`, and is now
+`pi-footer`. Files written under either former name are still read, newest first:
+
+```text
+pi-footer.json      current; always the name written
+pid-footer.json     read when no current file sits beside it
+pi-x-footer.json    read when neither of the above exists
+```
+
+A legacy file is read in place: nothing is migrated and nothing is deleted, because it is the
+user's file. Saving keeps using the path the config was loaded from, so a setup that only ever had
+a legacy file keeps writing into that same file instead of silently starting a second one.
 
 Project configuration is ignored by default. It is read only when the global configuration contains:
 

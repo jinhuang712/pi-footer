@@ -224,7 +224,7 @@ from `message_start` to `message_end`, including reasoning but excluding tool ex
 this measures a message-phase average rather than full-request or pure decoding throughput. The numerator is the provider's final `usage.output`, never estimated from text.
 Missing/invalid usage, zero duration, aborted replies and errors do not replace the last valid record.
 
-Each valid measurement is persisted at `turn_end` with `pi.appendEntry("pid-footer/throughput", data)`
+Each valid measurement is persisted at `turn_end` with `pi.appendEntry("pi-footer/throughput", data)`
 outside model context, after Pi has saved the assistant reply so the record cannot leak into its parent branch. Session start and tree navigation restore only the current branch's latest valid
 record; switching sessions without records clears it. Shutdown discards incomplete timing.
 Old sessions without measurements do not invent historical rates.

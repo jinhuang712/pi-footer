@@ -2,7 +2,7 @@
 
 ## 1. Product definition
 
-`pid-footer` is a focused Pi extension that replaces the default Footer with a configurable, information-dense, readable Footer.
+`pi-footer` is a focused Pi extension that replaces the default Footer with a configurable, information-dense, readable Footer.
 
 It should answer four questions without opening a menu:
 
@@ -60,7 +60,7 @@ After installing the extension, the user sees a four-row Footer with no required
 
 ### S-2: Configure multiple rows
 
-The user edits `~/.pi/agent/pid-footer.json` and adds or reorders rows. The next Footer render uses the new layout after validation and reload.
+The user edits `~/.pi/agent/pi-footer.json` and adds or reorders rows. The next Footer render uses the new layout after validation and reload.
 
 ### S-3: Narrow terminal
 
@@ -84,7 +84,7 @@ When the active provider is OpenCode Go, the Footer maps its rolling window to t
 
 ### S-8: Project configuration opt-in
 
-A repository may contain `.pi/pid-footer.json`, but the file is ignored unless the global setting explicitly enables project overrides.
+A repository may contain `.pi/pi-footer.json`, but the file is ignored unless the global setting explicitly enables project overrides.
 
 ## 5. Default user-facing layout
 

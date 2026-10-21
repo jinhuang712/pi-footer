@@ -1,10 +1,16 @@
 # Changelog
 
-All notable changes to `pid-footer` are documented here.
+All notable changes to `pi-footer` are documented here.
 
 ## [Unreleased]
 
 ### Changed
+
+- **Renamed to `pi-footer`.** Package name, command descriptions, widget key, and configuration file
+  follow. `pi-footer.json` is now the file written and read first; `pid-footer.json` and the older
+  `pi-x-footer.json` are still read when no newer file sits beside them, so no existing setup breaks.
+  Nothing is migrated or deleted on the user's behalf. Rename the GitHub repository to match, since
+  the install line in the README points at `pi-footer`.
 
 - **Renamed to `pid-footer`, and the command with it: `/xfooter` is now `/footer`.** The
   configuration file follows — `pid-footer.json` — and the former `pi-x-footer.json` is still read

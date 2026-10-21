@@ -144,7 +144,7 @@ Tokens: input ↓ 901k · output ↑ 63k · Cache: read 19.7m · write 0 · hit 
 ## 关闭
 
 ```text
-（pid-footer 不再渲染自己的 Footer）
+（pi-footer 不再渲染自己的 Footer）
 ```
 
 不会改变其他任何设置。重新开启后，原来的 Mode 和外观设置都还在。

@@ -7,9 +7,9 @@ import extension from "../src/index.js";
 type SessionStartHandler = (event: unknown, context: unknown) => void | Promise<void>;
 type CommandHandler = (args: string, context: unknown) => void | Promise<void>;
 
-describe("pid-footer extension scaffold", () => {
+describe("pi-footer extension scaffold", () => {
 	it("registers a Footer during a TUI session", async () => {
-		const agentDir = mkdtempSync(join(tmpdir(), "pid-footer-test-"));
+		const agentDir = mkdtempSync(join(tmpdir(), "pi-footer-test-"));
 		const previousAgentDir = process.env.PI_CODING_AGENT_DIR;
 		process.env.PI_CODING_AGENT_DIR = agentDir;
 		try {
@@ -65,7 +65,7 @@ describe("pid-footer extension scaffold", () => {
 	});
 
 	it("persists throughput, renders it within width, and restores the active branch", async () => {
-		const agentDir = mkdtempSync(join(tmpdir(), "pid-footer-test-"));
+		const agentDir = mkdtempSync(join(tmpdir(), "pi-footer-test-"));
 		const previousAgentDir = process.env.PI_CODING_AGENT_DIR;
 		process.env.PI_CODING_AGENT_DIR = agentDir;
 		const clock = vi.spyOn(performance, "now");
@@ -110,7 +110,7 @@ describe("pid-footer extension scaffold", () => {
 			expect(appendEntry).not.toHaveBeenCalled();
 			await handlers.turn_end?.({}, context);
 			expect(appendEntry).toHaveBeenCalledWith(
-				"pid-footer/throughput",
+				"pi-footer/throughput",
 				expect.objectContaining({ tokensPerSecond: 50 }),
 			);
 			expect(component.render(120).join("\n")).toContain("50.0 tok/s");
@@ -134,7 +134,7 @@ describe("pid-footer extension scaffold", () => {
 	});
 
 	it("refreshes context limits when the selected model changes", async () => {
-		const agentDir = mkdtempSync(join(tmpdir(), "pid-footer-test-"));
+		const agentDir = mkdtempSync(join(tmpdir(), "pi-footer-test-"));
 		const previousAgentDir = process.env.PI_CODING_AGENT_DIR;
 		process.env.PI_CODING_AGENT_DIR = agentDir;
 		try {
@@ -217,7 +217,7 @@ describe("pid-footer extension scaffold", () => {
 
 	it("stops and restarts data sources once when toggling the Footer", async () => {
 		vi.useFakeTimers();
-		const agentDir = mkdtempSync(join(tmpdir(), "pid-footer-test-"));
+		const agentDir = mkdtempSync(join(tmpdir(), "pi-footer-test-"));
 		const previousAgentDir = process.env.PI_CODING_AGENT_DIR;
 		process.env.PI_CODING_AGENT_DIR = agentDir;
 		try {

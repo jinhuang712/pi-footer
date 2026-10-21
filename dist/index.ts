@@ -1760,7 +1760,7 @@ var SelectList = class {
     return item || null;
   }
 };
-var WIZARD_EXIT = "\0pid-footer:exit\0";
+var WIZARD_EXIT = "\0pi-footer:exit\0";
 function settingsSelectItems(options) {
   const parsed = options.map((value) => {
     const separators = [value.indexOf(" - "), value.indexOf(" \u2014 ")].filter((index) => index >= 0);
@@ -4403,13 +4403,16 @@ function invalidDiagnostic(path, message) {
 }
 
 // src/config/loader.ts
-var CONFIG_FILE_NAME = "pid-footer.json";
-var LEGACY_CONFIG_FILE_NAME = "pi-x-footer.json";
+var CONFIG_FILE_NAME = "pi-footer.json";
+var LEGACY_CONFIG_FILE_NAMES = ["pid-footer.json", "pi-x-footer.json"];
 function existing(dir) {
   const current = join(dir, CONFIG_FILE_NAME);
   if (existsSync(current)) return current;
-  const legacy = join(dir, LEGACY_CONFIG_FILE_NAME);
-  return existsSync(legacy) ? legacy : current;
+  for (const name of LEGACY_CONFIG_FILE_NAMES) {
+    const legacy = join(dir, name);
+    if (existsSync(legacy)) return legacy;
+  }
+  return current;
 }
 function configFilePath(agentDir = getAgentDir()) {
   return existing(agentDir);
@@ -5007,7 +5010,11 @@ function runtimeModeFromContext(mode) {
 }
 
 // src/data/throughput.ts
-var THROUGHPUT_ENTRY = "pid-footer/throughput";
+var THROUGHPUT_ENTRY = "pi-footer/throughput";
+var LEGACY_THROUGHPUT_ENTRIES = ["pid-footer/throughput"];
+function isThroughputEntry(customType) {
+  return typeof customType === "string" && (customType === THROUGHPUT_ENTRY || LEGACY_THROUGHPUT_ENTRIES.includes(customType));
+}
 function createThroughputDataSource(store, persist, clock = {
   monotonic: () => performance.now(),
   wall: () => Date.now()
@@ -5040,7 +5047,7 @@ function createThroughputDataSource(store, persist, clock = {
       startedAt = void 0;
       let throughput;
       for (const entry of entries) {
-        if (!isRecord3(entry) || entry.type !== "custom" || entry.customType !== THROUGHPUT_ENTRY)
+        if (!isRecord3(entry) || entry.type !== "custom" || !isThroughputEntry(entry.customType))
           continue;
         if (isThroughputRecord(entry.data)) throughput = entry.data;
       }
@@ -5062,7 +5069,7 @@ function isThroughputRecord(value) {
 }
 
 // src/host/widget.ts
-var WIDGET_USAGE_KEY = "pid-footer";
+var WIDGET_USAGE_KEY = "pi-footer";
 function wantsWidgets(ctx) {
   return ctx.hasUI && ctx.mode !== "tui";
 }
@@ -5299,7 +5306,7 @@ async function fetchUsageJson(url, auth, signal, timeoutMs, fetchImpl = defaultF
   try {
     const response = await fetchImpl(url, {
       method: "GET",
-      headers: { ...auth.headers, "User-Agent": "pid-footer" },
+      headers: { ...auth.headers, "User-Agent": "pi-footer" },
       signal: controller.signal
     });
     if (controller.signal.aborted) {
@@ -6008,7 +6015,7 @@ function createUsageManager(options) {
 }
 
 // src/extension.ts
-function pidFooter(pi) {
+function piFooter(pi) {
   const store = createFooterStore();
   const sessionData = createSessionDataSource(store);
   const conversationData = createConversationDataSource(store);
@@ -6073,11 +6080,11 @@ function pidFooter(pi) {
       applyRuntimeConfig(ctx, config);
       ctx.ui.notify(message, "info");
     } catch {
-      ctx.ui.notify("\u65E0\u6CD5\u4FDD\u5B58 pid-footer \u914D\u7F6E\uFF0C\u539F\u914D\u7F6E\u672A\u6539\u53D8\u3002", "error");
+      ctx.ui.notify("\u65E0\u6CD5\u4FDD\u5B58 pi-footer \u914D\u7F6E\uFF0C\u539F\u914D\u7F6E\u672A\u6539\u53D8\u3002", "error");
     }
   };
   pi.registerCommand("footer", {
-    description: "Configure the pid-footer Footer",
+    description: "Configure the pi-footer Footer",
     handler: async (args, ctx) => {
       const action = parseFooterCommand(args);
       const loaded = loadConfig({ projectRoot: ctx.cwd });
@@ -6148,13 +6155,13 @@ ${FOOTER_HELP}`, "error");
         };
         const next2 = await runFooterWizard(current, wizardUI, save);
         applyRuntimeConfig(ctx, next2);
-        ctx.ui.notify("pid-footer \u914D\u7F6E\u5DF2\u66F4\u65B0\u3002", "info");
+        ctx.ui.notify("pi-footer \u914D\u7F6E\u5DF2\u66F4\u65B0\u3002", "info");
         return;
       }
       const next = cloneConfig(current);
       if (action.kind === "toggle") next.enabled = !next.enabled;
       if (action.kind === "preset") applyBuiltInPreset(next, action.preset);
-      await saveAndApply(ctx, next, "pid-footer \u914D\u7F6E\u5DF2\u66F4\u65B0\u3002");
+      await saveAndApply(ctx, next, "pi-footer \u914D\u7F6E\u5DF2\u66F4\u65B0\u3002");
     }
   });
   pi.on("session_start", (_event, ctx) => {
@@ -6230,6 +6237,6 @@ function createUsageContext(ctx) {
   };
 }
 export {
-  pidFooter as default
+  piFooter as default
 };
 //# sourceMappingURL=index.ts.map

@@ -437,6 +437,17 @@ describe("config loading and project overrides", () => {
 		const root = makeTemporaryDirectory();
 		const agentDir = join(root, "agent");
 		mkdirSync(agentDir, { recursive: true });
+		writeFileSync(join(agentDir, "pid-footer.json"), '{"style":{"icons":"minimal"}}\n', "utf8");
+		const loaded = loadConfig({ agentDir });
+		expect(loaded.source).toBe("global");
+		expect(loaded.config.style.icons).toBe("minimal");
+		expect(configFilePath(agentDir)).toBe(join(agentDir, "pid-footer.json"));
+	});
+
+	it("reads the file written under the oldest name", () => {
+		const root = makeTemporaryDirectory();
+		const agentDir = join(root, "agent");
+		mkdirSync(agentDir, { recursive: true });
 		writeFileSync(join(agentDir, "pi-x-footer.json"), '{"style":{"icons":"minimal"}}\n', "utf8");
 		const loaded = loadConfig({ agentDir });
 		expect(loaded.source).toBe("global");
@@ -444,21 +455,47 @@ describe("config loading and project overrides", () => {
 		expect(configFilePath(agentDir)).toBe(join(agentDir, "pi-x-footer.json"));
 	});
 
-	it("prefers the current name when both files are present", () => {
+	it("prefers the current name when legacy files sit beside it", () => {
 		const root = makeTemporaryDirectory();
 		const agentDir = join(root, "agent");
 		mkdirSync(agentDir, { recursive: true });
-		writeFileSync(join(agentDir, "pi-x-footer.json"), '{"style":{"icons":"minimal"}}\n', "utf8");
-		writeFileSync(join(agentDir, "pid-footer.json"), '{"style":{"icons":"nerd"}}\n', "utf8");
+		writeFileSync(join(agentDir, "pi-x-footer.json"), '{"style":{"icons":"off"}}\n', "utf8");
+		writeFileSync(join(agentDir, "pid-footer.json"), '{"style":{"icons":"minimal"}}\n', "utf8");
+		writeFileSync(join(agentDir, "pi-footer.json"), '{"style":{"icons":"nerd"}}\n', "utf8");
 		expect(loadConfig({ agentDir }).config.style.icons).toBe("nerd");
+		expect(configFilePath(agentDir)).toBe(join(agentDir, "pi-footer.json"));
+	});
+
+	it("prefers the newer legacy name over the oldest", () => {
+		const root = makeTemporaryDirectory();
+		const agentDir = join(root, "agent");
+		mkdirSync(agentDir, { recursive: true });
+		writeFileSync(join(agentDir, "pi-x-footer.json"), '{"style":{"icons":"off"}}\n', "utf8");
+		writeFileSync(join(agentDir, "pid-footer.json"), '{"style":{"icons":"minimal"}}\n', "utf8");
+		expect(loadConfig({ agentDir }).config.style.icons).toBe("minimal");
 		expect(configFilePath(agentDir)).toBe(join(agentDir, "pid-footer.json"));
+	});
+
+	it("saves back into the legacy file it loaded, without moving it", () => {
+		const root = makeTemporaryDirectory();
+		const agentDir = join(root, "agent");
+		mkdirSync(agentDir, { recursive: true });
+		const legacyPath = join(agentDir, "pid-footer.json");
+		writeFileSync(legacyPath, '{"style":{"icons":"minimal"}}\n', "utf8");
+		const loaded = loadConfig({ agentDir });
+		saveConfig(loaded.globalPath, {
+			...loaded.config,
+			style: { ...loaded.config.style, icons: "nerd" },
+		});
+		expect(JSON.parse(readFileSync(legacyPath, "utf8")).style.icons).toBe("nerd");
+		expect(configFilePath(agentDir)).toBe(legacyPath);
 	});
 
 	it("loads global configuration and keeps malformed input out of the active config", () => {
 		const root = makeTemporaryDirectory();
 		const agentDir = join(root, "agent");
 		mkdirSync(agentDir, { recursive: true });
-		const path = join(agentDir, "pid-footer.json");
+		const path = join(agentDir, "pi-footer.json");
 		writeFileSync(path, '{"style":{"icons":"minimal"}}\n', "utf8");
 		const loaded = loadConfig({ agentDir });
 		expect(loaded.source).toBe("global");
@@ -478,7 +515,7 @@ describe("config loading and project overrides", () => {
 		mkdirSync(agentDir, { recursive: true });
 		mkdirSync(join(projectRoot, ".pi"), { recursive: true });
 		writeFileSync(
-			join(agentDir, "pid-footer.json"),
+			join(agentDir, "pi-footer.json"),
 			JSON.stringify({ style: { icons: "minimal" } }),
 			"utf8",
 		);
@@ -494,7 +531,7 @@ describe("config loading and project overrides", () => {
 		expect(disabled.projectPath).toBeUndefined();
 
 		writeFileSync(
-			join(agentDir, "pid-footer.json"),
+			join(agentDir, "pi-footer.json"),
 			JSON.stringify({ projectOverrides: { enabled: true }, style: { icons: "minimal" } }),
 			"utf8",
 		);
@@ -533,7 +570,7 @@ describe("config persistence", () => {
 
 	it("writes a normalized config document atomically", () => {
 		const root = makeTemporaryDirectory();
-		const path = join(root, "nested", "pid-footer.json");
+		const path = join(root, "nested", "pi-footer.json");
 		const config = createDefaultConfig();
 		config.enabled = false;
 		saveConfig(path, config);
@@ -542,14 +579,14 @@ describe("config persistence", () => {
 
 	it("writes a supplied document without leaving temporary files", () => {
 		const root = makeTemporaryDirectory();
-		const path = join(root, "pid-footer.json");
+		const path = join(root, "pi-footer.json");
 		saveConfigDocument(path, '{"version":1}\n');
 		expect(readFileSync(path, "utf8")).toBe('{"version":1}\n');
 	});
 });
 
 function makeTemporaryDirectory(): string {
-	const directory = mkdtempSync(join(tmpdir(), "pid-footer-config-"));
+	const directory = mkdtempSync(join(tmpdir(), "pi-footer-config-"));
 	temporaryDirectories.push(directory);
 	return directory;
 }

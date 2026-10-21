@@ -32,7 +32,7 @@ import { resolveRuntimeUsageAuth } from "./usage/auth.js";
 import { createUsageManager } from "./usage/manager.js";
 import type { UsageManager, UsageSessionContext } from "./usage/types.js";
 
-export default function pidFooter(pi: ExtensionAPI): void {
+export default function piFooter(pi: ExtensionAPI): void {
 	const store = createFooterStore();
 	const sessionData = createSessionDataSource(store);
 	const conversationData = createConversationDataSource(store);
@@ -114,12 +114,12 @@ export default function pidFooter(pi: ExtensionAPI): void {
 			applyRuntimeConfig(ctx, config);
 			ctx.ui.notify(message, "info");
 		} catch {
-			ctx.ui.notify("无法保存 pid-footer 配置，原配置未改变。", "error");
+			ctx.ui.notify("无法保存 pi-footer 配置，原配置未改变。", "error");
 		}
 	};
 
 	pi.registerCommand("footer", {
-		description: "Configure the pid-footer Footer",
+		description: "Configure the pi-footer Footer",
 		handler: async (args, ctx) => {
 			const action = parseFooterCommand(args);
 			const loaded = loadConfig({ projectRoot: ctx.cwd });
@@ -203,14 +203,14 @@ export default function pidFooter(pi: ExtensionAPI): void {
 				};
 				const next = await runFooterWizard(current, wizardUI, save);
 				applyRuntimeConfig(ctx, next);
-				ctx.ui.notify("pid-footer 配置已更新。", "info");
+				ctx.ui.notify("pi-footer 配置已更新。", "info");
 				return;
 			}
 
 			const next = cloneConfig(current);
 			if (action.kind === "toggle") next.enabled = !next.enabled;
 			if (action.kind === "preset") applyBuiltInPreset(next, action.preset);
-			await saveAndApply(ctx, next, "pid-footer 配置已更新。");
+			await saveAndApply(ctx, next, "pi-footer 配置已更新。");
 		},
 	});
 

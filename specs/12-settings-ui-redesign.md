@@ -233,7 +233,7 @@ Footer
 
 ### Show Footer
 
-控制整个 pid-footer 是否显示。关闭时，根菜单中的其他设置会显示为禁用状态，不能进入或修改；重新打开 Footer 后恢复可用。
+控制整个 pi-footer 是否显示。关闭时，根菜单中的其他设置会显示为禁用状态，不能进入或修改；重新打开 Footer 后恢复可用。
 
 ### Project-specific settings
 

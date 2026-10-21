@@ -1,15 +1,15 @@
 {
-	"name": "pid-footer",
+	"name": "pi-footer",
 	"version": "0.1.0",
 	"description": "A focused, configurable multi-row Footer for Pi.",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/jinhuang712/pi-x-footer.git"
+		"url": "git+https://github.com/jinhuang712/pi-footer.git"
 	},
 	"bugs": {
-		"url": "https://github.com/jinhuang712/pi-x-footer/issues"
+		"url": "https://github.com/jinhuang712/pi-footer/issues"
 	},
-	"homepage": "https://github.com/jinhuang712/pi-x-footer#readme",
+	"homepage": "https://github.com/jinhuang712/pi-footer#readme",
 	"type": "module",
 	"license": "MIT",
 	"private": false,

@@ -1,7 +1,16 @@
 import type { FooterStore } from "../state/store.js";
 import type { ThroughputSnapshot } from "../state/types.js";
 
-export const THROUGHPUT_ENTRY = "pid-footer/throughput";
+export const THROUGHPUT_ENTRY = "pi-footer/throughput";
+/** Entries written before the rename still hold measurements worth restoring. */
+const LEGACY_THROUGHPUT_ENTRIES = ["pid-footer/throughput"];
+
+function isThroughputEntry(customType: unknown): boolean {
+	return (
+		typeof customType === "string" &&
+		(customType === THROUGHPUT_ENTRY || LEGACY_THROUGHPUT_ENTRIES.includes(customType))
+	);
+}
 
 interface MessageLike {
 	role: string;
@@ -45,7 +54,7 @@ export function createThroughputDataSource(
 			startedAt = undefined;
 			let throughput: ThroughputSnapshot | undefined;
 			for (const entry of entries) {
-				if (!isRecord(entry) || entry.type !== "custom" || entry.customType !== THROUGHPUT_ENTRY)
+				if (!isRecord(entry) || entry.type !== "custom" || !isThroughputEntry(entry.customType))
 					continue;
 				if (isThroughputRecord(entry.data)) throughput = entry.data;
 			}

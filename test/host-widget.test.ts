@@ -100,7 +100,7 @@ describe("createWidgetPublisher", () => {
 		createWidgetPublisher(store).start(ctx);
 
 		expect(calls).toHaveLength(1);
-		expect(calls[0].key).toBe("pid-footer");
+		expect(calls[0].key).toBe("pi-footer");
 		expect(JSON.parse(calls[0].lines?.[0] ?? "{}").providerLabel).toBe("OpenCode Go");
 
 		store.update({ providerUsage: { ...USAGE, state: "stale" } });
@@ -125,7 +125,7 @@ describe("createWidgetPublisher", () => {
 		publisher.start(ctx);
 		publisher.stop(ctx);
 		expect(calls).toHaveLength(2);
-		expect(calls[1]).toEqual({ key: "pid-footer", lines: undefined });
+		expect(calls[1]).toEqual({ key: "pi-footer", lines: undefined });
 
 		// Stopping twice must not send a second clear, and the store no longer reaches it.
 		store.update({ providerUsage: { ...USAGE, state: "error" } });

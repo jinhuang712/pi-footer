@@ -14,7 +14,7 @@ import type { FooterSnapshot, ProviderUsageSnapshot, ThroughputSnapshot } from "
  */
 
 /** This extension's name. A widget key is an identity, so the host routes the lines back by it. */
-export const WIDGET_USAGE_KEY = "pid-footer";
+export const WIDGET_USAGE_KEY = "pi-footer";
 
 /**
  * Provider quota, ready to render: percentages already consumed, plus the moment each window rolls

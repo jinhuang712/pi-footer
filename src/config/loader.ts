@@ -6,16 +6,22 @@ import { cleanLayoutRows } from "./layout.js";
 import { normalizeConfig } from "./schema.js";
 import type { ConfigDiagnostic, ConfigSource, FooterConfig, LoadedConfig } from "./types.js";
 
-export const CONFIG_FILE_NAME = "pid-footer.json";
-/** The name this extension used before it was renamed; read when the current one is absent. */
-export const LEGACY_CONFIG_FILE_NAME = "pi-x-footer.json";
+export const CONFIG_FILE_NAME = "pi-footer.json";
+/**
+ * The names this extension used before it was renamed, newest first. Read only while no newer file
+ * sits beside them, so an existing setup keeps working untouched.
+ */
+export const LEGACY_CONFIG_FILE_NAMES = ["pid-footer.json", "pi-x-footer.json"] as const;
 
-/** The current path, or the legacy one while only that exists. Writes always use the current name. */
+/** The current path, or the newest legacy one that exists. Writes always use the current name. */
 function existing(dir: string): string {
 	const current = join(dir, CONFIG_FILE_NAME);
 	if (existsSync(current)) return current;
-	const legacy = join(dir, LEGACY_CONFIG_FILE_NAME);
-	return existsSync(legacy) ? legacy : current;
+	for (const name of LEGACY_CONFIG_FILE_NAMES) {
+		const legacy = join(dir, name);
+		if (existsSync(legacy)) return legacy;
+	}
+	return current;
 }
 
 export interface LoadConfigOptions {

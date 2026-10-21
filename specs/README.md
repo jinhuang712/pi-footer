@@ -1,10 +1,10 @@
-# pid-footer Specifications
+# pi-footer Specifications
 
 Status: Draft for implementation planning
 
 ## Purpose
 
-This directory contains the product specification, technical design, acceptance criteria, and staged implementation plan for `pid-footer`.
+This directory contains the product specification, technical design, acceptance criteria, and staged implementation plan for `pi-footer`.
 
 The project is a Footer-only Pi extension. Its differentiators are:
 
@@ -38,7 +38,7 @@ The project is a Footer-only Pi extension. Its differentiators are:
 
 ## Decisions already made
 
-- `pid-footer` replaces only the Footer through `ctx.ui.setFooter(...)`.
+- `pi-footer` replaces only the Footer through `ctx.ui.setFooter(...)`.
 - Multi-row layout is a first-class feature, not a later enhancement.
 - Default style uses text, semantic colors, and ordinary separators; Emoji and Powerline are opt-in.
 - Color is part of the information model, not only decoration.

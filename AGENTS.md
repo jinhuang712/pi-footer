@@ -1,8 +1,8 @@
-# pid-footer 开发规范
+# pi-footer 开发规范
 
 ## 1. 项目定位
 
-`pid-footer` 是一个 Footer-only 的 Pi Extension，核心目标是提供：
+`pi-footer` 是一个 Footer-only 的 Pi Extension，核心目标是提供：
 
 - 可配置的多行 Footer。
 - 响应式宽度适配。
@@ -158,7 +158,7 @@ git log --oneline -3
 - 不得依赖 Pi 内部编译产物或私有 TUI API。
 - 在终端里不得使用 `setWidget()` 来绕过 Footer API。
 - 终端之外没有 Footer API 可用：`setFooter()` 要的是一个 pi-tui 组件，只有终端能挂载。所以
-  `ctx.hasUI && ctx.mode !== "tui"` 的宿主改走 `setWidget()`，键就是扩展名 `pid-footer`，内容是
+  `ctx.hasUI && ctx.mode !== "tui"` 的宿主改走 `setWidget()`，键就是扩展名 `pi-footer`，内容是
   同一份快照的 JSON；由本扩展自己的桌面半边 `src/ui.tsx` 把它画出来。同一条管线、同一组数字，
   只是换谁来画。
 - 不要为了怕宿主显示 JSON 原文而退回一行纯文本：画它的是本扩展自己的代码，宿主不需要认识这份
@@ -181,10 +181,11 @@ v0.1 明确不做：
 
 ## 8. 配置和兼容性
 
-- 全局配置路径：`~/.pi/agent/pid-footer.json`。
-- 项目配置路径：`<project>/.pi/pid-footer.json`。
-- 扩展改名前叫 `pi-x-footer`，旧文件名 `pi-x-footer.json` 仍然会被读取：同目录下两份都在时以新名为准，
-  只有旧名时照读不误。写入一律写新名，不迁移、不删除旧文件——那是用户的文件。
+- 全局配置路径：`~/.pi/agent/pi-footer.json`。
+- 项目配置路径：`<project>/.pi/pi-footer.json`。
+- 扩展先后叫过 `pid-footer` 和 `pi-x-footer`。读取顺序是 `pi-footer.json` → `pid-footer.json` →
+  `pi-x-footer.json`，同一目录下以顺序靠前者为准，只有旧名文件时照读不误。写入沿用加载到的那个文件：
+  用户只有旧名文件时，保存写回旧名文件，不迁移、不删除、不另建一份——那是用户的文件。
 - 项目配置默认关闭。
 - 配置必须经过校验，写入必须使用原子替换。
 - 非法配置不得破坏上一份有效配置。

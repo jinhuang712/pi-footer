@@ -259,7 +259,7 @@ Users can manage common settings without manually editing JSON.
 
 ### Deliverable
 
-A publishable `pid-footer@0.1.0` package.
+A publishable `pi-footer@0.1.0` package.
 
 ## 12. Suggested implementation order inside the codebase
 
